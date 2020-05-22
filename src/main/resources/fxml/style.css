@@ -1,0 +1,55 @@
+.menuText {
+	-fx-text-fill: white;
+	-fx-effect: dropshadow(one-pass-box, black, 4, 0.0, 1, 1);
+}
+
+.title {
+	-fx-font-size: 40px;
+	-fx-text-fill: #0e76ed;
+	-fx-font-weight: bold;
+	-fx-effect: dropshadow(one-pass-box, black, 4, 0.0, 2, 1);
+	-fx-padding: 100px 0 40px 0;
+}
+
+.startBtn {
+	-fx-padding: 8 15 15 15;
+	-fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+	-fx-background-radius: 8;
+	-fx-background-color: 
+		linear-gradient(from 0% 93% to 0% 100%, #1277b3 0%, #0b8dd9 100%),
+		#105b86,
+		#209ee8,
+		radial-gradient(center 50% 50%, radius 100%, #4eb5f2, #4498c9);
+	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+	-fx-font-weight: bold;
+	-fx-font-size: 1.1em;
+	-fx-text-fill: white;
+}
+.startBtn:hover {
+	-fx-background-color: 
+		linear-gradient(from 0% 93% to 0% 100%, #0c75b3 0%, #0884cc 100%),
+		#105b86,
+		#1587c9,
+		radial-gradient(center 50% 50%, radius 100%, #2da6ec, #4498c9);
+}
+.startBtn:pressed {
+	-fx-padding: 10 15 13 15;
+	-fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
+}
+.startBtn Text {
+	-fx-effect: dropshadow(gaussian, #0545cf, 0, 0, 0, 2);
+}
+
+.startBtn:hover Text {
+	-fx-text-fill: #ffffff;
+}
+
+.comboBox {
+
+}
+
+.table-view .scroll-bar * {
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
