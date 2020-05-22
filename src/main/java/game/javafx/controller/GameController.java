@@ -1,5 +1,8 @@
 package game.javafx.controller;
 
+import game.state.Block;
+import game.state.GameTable;
+import game.state.Point;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -25,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import game.results.GameResult;
 import game.results.GameResultDao;
-import game.state.RollingCubesState;
+import util.Config;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -44,10 +48,8 @@ public class GameController {
     private GameResultDao gameResultDao;
 
     private String playerName;
-    private RollingCubesState gameState;
-    private IntegerProperty steps = new SimpleIntegerProperty();
+    private GameTable gameTable;
     private Instant startTime;
-    private List<Image> cubeImages;
 
     @FXML
     private Label messageLabel;
@@ -77,16 +79,6 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        cubeImages = List.of(
-                new Image(getClass().getResource("/images/cube0.png").toExternalForm()),
-                new Image(getClass().getResource("/images/cube1.png").toExternalForm()),
-                new Image(getClass().getResource("/images/cube2.png").toExternalForm()),
-                new Image(getClass().getResource("/images/cube3.png").toExternalForm()),
-                new Image(getClass().getResource("/images/cube4.png").toExternalForm()),
-                new Image(getClass().getResource("/images/cube5.png").toExternalForm()),
-                new Image(getClass().getResource("/images/cube6.png").toExternalForm())
-        );
-        stepsLabel.textProperty().bind(steps.asString());
         gameOver.addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 log.info("Game is over");
@@ -99,43 +91,59 @@ public class GameController {
     }
 
     private void resetGame() {
-        gameState = new RollingCubesState(RollingCubesState.NEAR_GOAL);
-        steps.set(0);
+        gameTable = new GameTable(Config.SIZE.getValue(), Config.SIZE.getValue());
+
         startTime = Instant.now();
         gameOver.setValue(false);
-        displayGameState();
         createStopWatch();
         Platform.runLater(() -> messageLabel.setText("Good luck, " + playerName + "!"));
-    }
 
-    private void displayGameState() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                ImageView view = (ImageView) gameGrid.getChildren().get(i * 3 + j);
-                if (view.getImage() != null) {
-                    log.trace("Image({}, {}) = {}", i, j, view.getImage().getUrl());
-                }
-                view.setImage(cubeImages.get(gameState.getTray()[i][j].getValue()));
+        gameGrid.getChildren().removeIf(Block.class::isInstance);
+        for (int i = 0; i < Config.SIZE.getValue(); i++) {
+            for (int j = 0; j < Config.SIZE.getValue(); j++) {
+                Point point = new Point(i, j);
+                Block block = new Block(gameTable, point);
+                gameTable.addBlock(point, block);
+                gameGrid.add(block, i, j);
             }
         }
+
+        gameTable.startGame();
     }
 
-    public void handleClickOnCube(MouseEvent mouseEvent) {
-        int row = GridPane.getRowIndex((Node) mouseEvent.getSource());
-        int col = GridPane.getColumnIndex((Node) mouseEvent.getSource());
-        log.debug("Cube ({}, {}) is pressed", row, col);
-        if (! gameState.isSolved() && gameState.canRollToEmptySpace(row, col)) {
-            steps.set(steps.get() + 1);
-            gameState.rollToEmptySpace(row, col);
-            if (gameState.isSolved()) {
-                gameOver.setValue(true);
-                log.info("Player {} has solved the game in {} steps", playerName, steps.get());
-                messageLabel.setText("Congratulations, " + playerName + "!");
-                resetButton.setDisable(true);
-                giveUpButton.setText("Finish");
-            }
+    @FXML
+    public void handleKeyPressedEvent(KeyEvent event) {
+        log.debug("Press button {}", event.getCode().toString());
+        switch(event.getCode()) {
+            case DOWN:
+            case S:
+                gameTable.moveDown();
+                break;
+
+            case UP:
+            case W:
+                gameTable.moveUp();
+                break;
+
+            case LEFT:
+            case A:
+                gameTable.moveLeft();
+                break;
+
+            case RIGHT:
+            case D:
+                gameTable.moveRight();
+                break;
+
+            default:
+                break;
         }
-        displayGameState();
+
+        stepsLabel.setText(String.format("%d", gameTable.getScore()));
+
+        if (gameTable.isFinished()) {
+            giveUpButton.setText("Finish");
+        }
     }
 
     public void handleResetButton(ActionEvent actionEvent)  {
@@ -163,9 +171,9 @@ public class GameController {
     private GameResult createGameResult() {
         GameResult result = GameResult.builder()
                 .player(playerName)
-                .solved(gameState.isSolved())
+                .solved(true)
                 .duration(Duration.between(startTime, Instant.now()))
-                .steps(steps.get())
+                .steps(gameTable.getScore())
                 .build();
         return result;
     }
