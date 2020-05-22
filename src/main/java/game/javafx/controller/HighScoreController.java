@@ -43,7 +43,7 @@ public class HighScoreController {
     private TableColumn<GameResult, String> player;
 
     @FXML
-    private TableColumn<GameResult, Integer> steps;
+    private TableColumn<GameResult, Integer> score;
 
     @FXML
     private TableColumn<GameResult, Duration> duration;
@@ -57,7 +57,7 @@ public class HighScoreController {
         List<GameResult> highScoreList = gameResultDao.findBest(10);
 
         player.setCellValueFactory(new PropertyValueFactory<>("player"));
-        steps.setCellValueFactory(new PropertyValueFactory<>("steps"));
+        score.setCellValueFactory(new PropertyValueFactory<>("score"));
         duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
         created.setCellValueFactory(new PropertyValueFactory<>("created"));
 

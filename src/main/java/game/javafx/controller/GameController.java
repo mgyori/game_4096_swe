@@ -8,9 +8,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,10 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +31,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @Slf4j
 public class GameController {
@@ -101,9 +95,8 @@ public class GameController {
         gameGrid.getChildren().removeIf(Block.class::isInstance);
         for (int i = 0; i < Config.SIZE.getValue(); i++) {
             for (int j = 0; j < Config.SIZE.getValue(); j++) {
-                Point point = new Point(i, j);
-                Block block = new Block(gameTable, point);
-                gameTable.addBlock(point, block);
+                Block block = new Block();
+                gameTable.addBlock(new Point(i, j), block);
                 gameGrid.add(block, i, j);
             }
         }
@@ -113,7 +106,11 @@ public class GameController {
 
     @FXML
     public void handleKeyPressedEvent(KeyEvent event) {
-        log.debug("Press button {}", event.getCode().toString());
+        log.debug("Pressed button -> {}", event.getCode().toString());
+
+        if (gameTable.isFinished())
+            return;
+
         switch(event.getCode()) {
             case DOWN:
             case S:
@@ -143,6 +140,13 @@ public class GameController {
 
         if (gameTable.isFinished()) {
             giveUpButton.setText("Finish");
+            gameOver.setValue(true);
+            resetButton.setDisable(true);
+            if (gameTable.isFinished() && gameTable.checkAnyMovable()) {
+                messageLabel.setText("Congratulations, " + playerName + "!");
+            } else {
+                messageLabel.setText("Game Over, " + playerName + "!");
+            }
         }
     }
 
@@ -171,9 +175,9 @@ public class GameController {
     private GameResult createGameResult() {
         GameResult result = GameResult.builder()
                 .player(playerName)
-                .solved(true)
+                .solved(gameTable.isFinished())
                 .duration(Duration.between(startTime, Instant.now()))
-                .steps(gameTable.getScore())
+                .score(gameTable.getScore())
                 .build();
         return result;
     }

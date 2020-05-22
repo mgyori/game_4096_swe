@@ -1,13 +1,15 @@
 package game.state;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import util.Config;
 
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * Class for 4096 game table logic.
+ */
 @Slf4j
 public class GameTable {
     private HashMap<Point, Block> blocks;
@@ -29,19 +31,37 @@ public class GameTable {
         this.blocks = new HashMap<Point, Block>();
     }
 
+    /**
+     * Add game block to the specified location.
+     * @param point The block in x-y coordinate.
+     * @param block The block.
+     */
     public void addBlock(Point point, Block block) {
         this.blocks.put(point, block);
     }
 
+    /**
+     * Get the game block from specified location.
+     * @param x The block X coordinate.
+     * @param y The block Y coordinate.
+     * @return The block in x-y coordinate.
+     */
     public Block getBlock(int x, int y) {
         return this.blocks.get(new Point(x, y));
     }
 
+    /**
+     * Function for rendering and updateing the block and the table design.
+     */
     public void render() {
         for(Block b : this.blocks.values())
             b.render();
     }
 
+    /**
+     * Function for checking for available free space in table.
+     * @return Returns true if exists free space.
+     */
     private boolean checkFreeSpace() {
         for(Block b : this.blocks.values())
             if (b.getPoint() == 0)
@@ -49,6 +69,9 @@ public class GameTable {
         return false;
     }
 
+    /**
+     * Method to add random block to the table.
+     */
     private void addRandomBlock() {
         if (!checkFreeSpace())
             return;
@@ -66,11 +89,15 @@ public class GameTable {
         this.getBlock(x, y).setNew(true);
     }
 
+    /**
+     * Method to start the game and reset score (also viewed blocks).
+     */
     public void startGame() {
         log.info("Start game!");
 
         this.canAddNew = true;
         this.score = 0;
+        this.finished = false;
 
         for(Block b : this.blocks.values()) {
             b.setPoint(0);
@@ -81,6 +108,9 @@ public class GameTable {
         this.nextRound();
     }
 
+    /**
+     * Method to start the next round. This method unlocks all blocks and adds X random blocks to a random positions.
+     */
     private void nextRound() {
         log.debug("Start next round!");
 
@@ -97,11 +127,15 @@ public class GameTable {
 
         this.render();
 
-        if (checkAnyMoveable())
+        if ((!checkAnyMovable() && !canAddNew) || (this.rows + this.cols) == 0)
             this.finished = true;
     }
 
-    public boolean checkAnyMoveable() {
+    /**
+     * Check for any movable blocks in a table.
+     * @return Returns true if any block is movable in table.
+     */
+    public boolean checkAnyMovable() {
         for (int i = 0; i < this.rows - 1; i++) {
             for (int j = 0; j < this.cols - 1; j++) {
                 Block thisBlock = this.getBlock(i, j);
@@ -118,6 +152,9 @@ public class GameTable {
         return false;
     }
 
+    /**
+     * This function unlocks all blocks in the table. If the block is locked it won't be movable anymore.
+     */
     private void unlockAllBlock() {
         log.debug("Unlocked all block");
         for(Block b : this.blocks.values()) {
@@ -126,6 +163,12 @@ public class GameTable {
         }
     }
 
+    /**
+     * This method adds up the points of two blocks if the result is not null, the target block will have that value.
+     * If the point reaches the maximum possible points (according to Config class) the finished variable will be set to True.
+     * @param selected The selected block.
+     * @param target The target block.
+     */
     private void processBlocks(Block selected, Block target) {
         if (selected.getPoint() != 0 && target.getPoint() == 0) {
             target.setPoint(selected.getPoint());
@@ -146,6 +189,9 @@ public class GameTable {
         }
     }
 
+    /**
+     * Method to move all blocks (if movable) down.
+     */
     public void moveDown() {
         log.debug("Move down");
         this.canAddNew = false;
@@ -175,6 +221,9 @@ public class GameTable {
         this.nextRound();
     }
 
+    /**
+     * Method to move all blocks (if movable) up.
+     */
     public void moveUp() {
         log.debug("Move up");
         this.canAddNew = false;
@@ -204,6 +253,9 @@ public class GameTable {
         this.nextRound();
     }
 
+    /**
+     * Method to move all blocks (if movable) left.
+     */
     public void moveLeft() {
         log.debug("Move Left");
         this.canAddNew = false;
@@ -233,6 +285,9 @@ public class GameTable {
         this.nextRound();
     }
 
+    /**
+     * Method to move all blocks (if movable) right.
+     */
     public void moveRight() {
         log.debug("Move Right");
         this.canAddNew = false;

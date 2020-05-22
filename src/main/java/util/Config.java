@@ -2,8 +2,6 @@ package util;
 
 /**
  * Class for game configuration.
- * @author marko
- *
  */
 public enum Config {
 

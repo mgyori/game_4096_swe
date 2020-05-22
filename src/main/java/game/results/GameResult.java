@@ -35,9 +35,9 @@ public class GameResult {
     private boolean solved;
 
     /**
-     * The number of steps made by the player.
+     * The number of score made by the player.
      */
-    private int steps;
+    private int score;
 
     /**
      * The duration of the game.

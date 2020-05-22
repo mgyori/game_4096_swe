@@ -9,7 +9,7 @@
       <TableView fx:id="highScoreTable" editable="true" layoutX="25.0" layoutY="74.0" prefHeight="550.0" prefWidth="650.0">
         <columns>
           <TableColumn fx:id="player" prefWidth="200.0" text="Player" />
-          <TableColumn fx:id="steps" prefWidth="50.0" text="Steps" />
+          <TableColumn fx:id="score" prefWidth="50.0" text="Score" />
             <TableColumn fx:id="duration" prefWidth="100.0" text="Duration" />
             <TableColumn fx:id="created" prefWidth="295.0" text="Date" />
         </columns>

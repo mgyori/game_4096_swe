@@ -8,8 +8,8 @@
     <version>1.0</version>
     <description>2048 game with some features.</description>
     <scm>
-        <connection>https://github.com/mgyori/game_4096_swe.git</connection>
-        <developerConnection>https://github.com/mgyori/game_4096_swe.git</developerConnection>
+        <connection>scm:git:https://github.com/mgyori/game_4096_swe.git</connection>
+        <developerConnection>scm:git:https://github.com/mgyori/game_4096_swe.git</developerConnection>
     </scm>
     <developers>
         <developer>
