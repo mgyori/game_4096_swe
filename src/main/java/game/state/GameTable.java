@@ -33,6 +33,7 @@ public class GameTable {
 
     /**
      * Add game block to the specified location.
+     *
      * @param point The block in x-y coordinate.
      * @param block The block.
      */
@@ -42,6 +43,7 @@ public class GameTable {
 
     /**
      * Get the game block from specified location.
+     *
      * @param x The block X coordinate.
      * @param y The block Y coordinate.
      * @return The block in x-y coordinate.
@@ -60,6 +62,7 @@ public class GameTable {
 
     /**
      * Function for checking for available free space in table.
+     *
      * @return Returns true if exists free space.
      */
     private boolean checkFreeSpace() {
@@ -133,6 +136,7 @@ public class GameTable {
 
     /**
      * Check for any movable blocks in a table.
+     *
      * @return Returns true if any block is movable in table.
      */
     public boolean checkAnyMovable() {
@@ -166,6 +170,7 @@ public class GameTable {
     /**
      * This method adds up the points of two blocks if the result is not null, the target block will have that value.
      * If the point reaches the maximum possible points (according to Config class) the finished variable will be set to True.
+     *
      * @param selected The selected block.
      * @param target The target block.
      */

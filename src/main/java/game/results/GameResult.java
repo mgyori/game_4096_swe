@@ -40,6 +40,11 @@ public class GameResult {
     private int score;
 
     /**
+     * Grid size.
+     */
+    private int grid;
+
+    /**
      * The duration of the game.
      */
     @Column(nullable = false)

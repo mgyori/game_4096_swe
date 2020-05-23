@@ -176,6 +176,7 @@ public class GameController {
         GameResult result = GameResult.builder()
                 .player(playerName)
                 .solved(gameTable.isFinished())
+                .grid(Config.SIZE.getValue())
                 .duration(Duration.between(startTime, Instant.now()))
                 .score(gameTable.getScore())
                 .build();

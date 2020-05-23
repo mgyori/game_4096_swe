@@ -3,6 +3,7 @@ package util;
 public class ColorHelper {
     /**
      * This function returns the block color by point.
+     *
      * @param num Number of color index.
      * @return The block color.
      */
@@ -16,6 +17,7 @@ public class ColorHelper {
 
     /**
      * This function returns the block text color by point.
+     *
      * @param num Number of color index.
      * @return The label text color.
      */

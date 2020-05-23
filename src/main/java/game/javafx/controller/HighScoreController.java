@@ -8,16 +8,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import game.results.GameResult;
 import game.results.GameResultDao;
+import util.Config;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -52,9 +50,20 @@ public class HighScoreController {
     private TableColumn<GameResult, ZonedDateTime> created;
 
     @FXML
+    private ComboBox gridSize;
+
+    @FXML
     private void initialize() {
         log.debug("Loading high scores...");
-        List<GameResult> highScoreList = gameResultDao.findBest(10);
+
+        gridSize.getItems().addAll(
+                "3x3",
+                "4x4",
+                "5x5",
+                "6x6",
+                "8x8"
+        );
+        gridSize.setValue(Config.SIZE.getValue() + "x" + Config.SIZE.getValue());
 
         player.setCellValueFactory(new PropertyValueFactory<>("player"));
         score.setCellValueFactory(new PropertyValueFactory<>("score"));
@@ -92,9 +101,14 @@ public class HighScoreController {
             return cell;
         });
 
+        handleGridSizeChange(null);
+    }
+
+    public void handleGridSizeChange(ActionEvent actionEvent) {
+        log.debug("Load grid high scores...");
+        List<GameResult> highScoreList = gameResultDao.findBest(Integer.parseInt(((String) gridSize.getValue()).split("x")[0]),20);
         ObservableList<GameResult> observableResult = FXCollections.observableArrayList();
         observableResult.addAll(highScoreList);
-
         highScoreTable.setItems(observableResult);
     }
 

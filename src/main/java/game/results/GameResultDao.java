@@ -23,8 +23,9 @@ public class GameResultDao extends GenericJpaDao<GameResult> {
      * spent for solving the puzzle
      */
     @Transactional
-    public List<GameResult> findBest(int n) {
-        return entityManager.createQuery("SELECT r FROM GameResult r WHERE r.solved = true ORDER BY r.duration ASC, r.created DESC", GameResult.class)
+    public List<GameResult> findBest(int grid, int n) {
+        return entityManager.createQuery("SELECT r FROM GameResult r WHERE r.grid = :grid ORDER BY r.score DESC, r.duration ASC, r.created DESC", GameResult.class)
+                .setParameter("grid", grid)
                 .setMaxResults(n)
                 .getResultList();
     }

@@ -13,6 +13,7 @@ import util.Config;
 public class Block extends StackPane {
     /**
      * Returns the block points. This is can be set by SetPoint function.
+     *
      * @return Returns the block points.
      */
     @Getter @Setter
@@ -22,6 +23,7 @@ public class Block extends StackPane {
 
     /**
      * Returns the block lock state.
+     *
      * @return Returns that block is locked.
      */
     @Getter @Setter
@@ -29,6 +31,7 @@ public class Block extends StackPane {
 
     /**
      * Return the block new state. If true the block is was not opened yet.
+     *
      * @return Return the block state.
      */
     @Getter @Setter
