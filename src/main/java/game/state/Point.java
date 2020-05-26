@@ -4,18 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * Class for storing XY coordinates
+ * Class for storing XY coordinates.
  */
 @Data
 @AllArgsConstructor
 public class Point {
     /**
-     * X coordinate
+     * X coordinate.
      */
     public int x;
 
     /**
-     * Y coordinate
+     * Y coordinate.
      */
     public int y;
 }

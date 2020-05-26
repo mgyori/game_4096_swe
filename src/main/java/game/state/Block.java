@@ -37,6 +37,9 @@ public class Block extends StackPane {
     @Getter @Setter
     private boolean isNew;
 
+    /**
+     * Constructor of Block class.
+     */
     public Block() {
         this.locked = false;
         this.isNew = false;

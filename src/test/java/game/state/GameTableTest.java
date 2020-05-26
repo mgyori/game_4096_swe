@@ -173,8 +173,6 @@ class GameTableTest {
     @Test
     void testInitedValues() {
         GameTable table = createEmptyTable(1);
-        assertEquals(1, table.getCols());
-        assertEquals(1, table.getRows());
         assertEquals(0, table.getScore());
     }
 }

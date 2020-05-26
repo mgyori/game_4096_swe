@@ -12,10 +12,12 @@ import java.util.Random;
  */
 @Slf4j
 public class GameTable {
+    /**
+     * This map contains the table blocks by XY coordinate as {@link Point}.
+     */
     private HashMap<Point, Block> blocks;
-    @Getter
+
     private int rows;
-    @Getter
     private int cols;
     private Random rand;
     @Getter
@@ -24,6 +26,11 @@ public class GameTable {
     @Getter
     private boolean finished;
 
+    /**
+     * Constructor of GameTable class.
+     * @param rows Number of table row count number
+     * @param cols Number of table column count number
+     */
     public GameTable(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
@@ -168,8 +175,8 @@ public class GameTable {
     }
 
     /**
-     * This method adds up the points of two blocks if the result is not null, the target block will have that value.
-     * If the point reaches the maximum possible points (according to Config class) the finished variable will be set to True.
+     * This method adds up the points of two blocks if the result is not null, the {@code target} block will have that value.
+     * If the point reaches the maximum possible points (according to {@link Config} class) the finished variable will be set to True.
      *
      * @param selected The selected block.
      * @param target The target block.

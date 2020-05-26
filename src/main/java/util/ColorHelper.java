@@ -1,5 +1,8 @@
 package util;
 
+/**
+ * This class function helps to provide color for a {@link game.state.Block}.
+ */
 public class ColorHelper {
     /**
      * This function returns the block color by point.

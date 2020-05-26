@@ -18,6 +18,7 @@ public class GameResultDao extends GenericJpaDao<GameResult> {
      * Returns the list of {@code n} best results with respect to the time
      * spent for solving the puzzle.
      *
+     * @param grid the grid index
      * @param n the maximum number of results to be returned
      * @return the list of {@code n} best results with respect to the time
      * spent for solving the puzzle
